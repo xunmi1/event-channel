@@ -1,22 +1,27 @@
 {
-  "name": "light-event",
+  "name": "@xunmi/event-channel",
   "version": "1.0.0",
-  "description": "light-event",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Implementation of the pub-sub pattern",
   "license": "MIT",
   "author": "xunmi",
-  "main": "dist/light-event.umd.js",
-  "module": "dist/light-event.esm.js",
-  "types": "dist/light-event.d.ts",
-  "files": ["dist"],
+  "main": "dist/event-channel.umd.js",
+  "module": "dist/event-channel.esm.js",
+  "types": "dist/event-channel.d.ts",
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xunmi1/light-event.git"
+    "url": "git+https://github.com/xunmi1/event-channel.git"
   },
-  "homepage": "https://github.com/xunmi1/light-event#readme",
+  "homepage": "https://github.com/xunmi1/event-channel#readme",
   "scripts": {
     "build": "npm run build-ts && npm run build-rollup && npm run build-dts && rimraf .cache",
     "build-ts": "rimraf .cache && tsc -p tsconfig.json --outDir .cache",
-    "build-rollup": "rimraf dist && rollup -c scripts/rollup.config.js  -i .cache/index.js",
+    "build-rollup": "rimraf dist && rollup -c scripts/rollup.config.js  -i .cache/src/index.js",
     "build-dts": "api-extractor run --local --typescript-compiler-folder \"node_modules/typescript\"",
     "lint": "prettier --write --parser typescript \"src/**/*.ts\""
   },
@@ -30,5 +35,6 @@
     "rollup-plugin-terser": "^6.1.0",
     "rimraf": "^3.0.2",
     "typescript": "^3.9.6"
-  }
+  },
+  "prettier": "@xunmi/prettier-config"
 }

@@ -8,6 +8,6 @@ export const findIndex = <T = any>(arr: T[], func: (value: T, index: number) => 
     k++;
   }
   return -1;
-}
+};
 
 export const isArray = Array.isArray;

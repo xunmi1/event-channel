@@ -13,8 +13,8 @@ const banner =
 `;
 
 const outputFileList = [
-  { name: 'LightEvent', format: 'umd' },
-  { name: 'LightEvent', format: 'umd', min: true },
+  { name: 'EventChannel', format: 'umd' },
+  { name: 'EventChannel', format: 'umd', min: true },
   { format: 'esm' },
   { format: 'esm', min: true },
 ];
@@ -28,7 +28,7 @@ const output = outputFileList.map(({ name, format, min }) => {
 export default {
   output,
   plugins: [
-    json({ namedExports: false }),
+    json(),
     resolve(),
   ],
 };

@@ -3,6 +3,9 @@ node_modules
 
 dist
 
+# Build mid product
+.cache
+
 # Log files
 npm-debug.log*
 yarn-debug.log*

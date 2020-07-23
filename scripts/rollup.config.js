@@ -1,13 +1,13 @@
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
-import pkg from '../package.json';
+import { version, author } from '../package.json';
 
 const currentYear = new Date().getFullYear();
 const banner =
   `/*!
- * ${pkg.name} v${pkg.version}
- * (c) ${currentYear > 2020 ? '2020-' : ''}${currentYear} ${pkg.author}
+ * event-channel v${version}
+ * (c) ${currentYear > 2020 ? '2020-' : ''}${currentYear} ${author}
  * Released under the MIT License.
  */
 `;
@@ -20,7 +20,7 @@ const outputFileList = [
 ];
 
 const output = outputFileList.map(({ name, format, min }) => {
-  const file = `dist/${pkg.name}.${format}${min ? '.min' : ''}.js`;
+  const file = `dist/event-channel.${format}${min ? '.min' : ''}.js`;
   const plugins = min ? [terser()] : [];
   return { name, format, banner, file, sourcemap: false, plugins };
 });

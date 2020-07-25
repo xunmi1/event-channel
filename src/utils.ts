@@ -1,9 +1,9 @@
 // IE compatible
 export const findIndex = <T = any>(arr: T[], func: (value: T, index: number) => boolean) => {
-  const len = arr.length;
-  let k = 0;
+  if (typeof arr.findIndex === 'function') return arr.findIndex(func);
 
-  while (k < len) {
+  let k = 0;
+  while (k < arr.length) {
     if (func.call(arr, arr[k], k)) return k;
     k++;
   }

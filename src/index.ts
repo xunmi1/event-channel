@@ -2,14 +2,16 @@ import { version } from '../package.json';
 import { createMap, CustomMap } from './map';
 import { findIndex, isArray } from './utils';
 
+// @public
 export type EventType = string | symbol;
+// @public
 export type Subscriber = (...args: any[]) => void;
 type RecordMap<T> = CustomMap<EventType, T[]>;
 
 /** @public */
 export default class EventChannel<T extends Subscriber> {
   static readonly version = version;
-  private readonly subscribers: RecordMap<[T, any]>;
+  private readonly subscribers: RecordMap<[T, unknown]>;
   private readonly historyParams: RecordMap<Parameters<T>>;
 
   private readonly before: boolean | EventType[];
@@ -33,6 +35,16 @@ export default class EventChannel<T extends Subscriber> {
     return subscriber.apply(context, params);
   }
 
+  private addSub(key: EventType, subscriber: T, context: any) {
+    if (!this.subscribers.has(key)) this.subscribers.set(key, []);
+
+    const list = this.subscribers.get(key);
+    // deduplication
+    const index = findIndex((list as unknown) as T[], v => v[0] === subscriber && v[1] === context);
+    if (index < 0) list!.push([subscriber, context]);
+    else list!.splice(index, 1, [subscriber, context]);
+  }
+
   /**
    * subscribe to an event
    * @param key - event name
@@ -42,10 +54,9 @@ export default class EventChannel<T extends Subscriber> {
    * The premise is to use `new EventChannel({ before: true | [key] })`
    * @param [options.context] - context of subscriber
    */
-  on(key: EventType, subscriber: T, options?: { before?: boolean; context?: any }) {
+  on(key: EventType, subscriber: T, options?: { before?: boolean; context?: any; once?: boolean }) {
     const { before, context } = options ?? {};
-    if (!this.subscribers.has(key)) this.subscribers.set(key, []);
-    this.subscribers.get(key)!.push([subscriber, context]);
+    this.addSub(key, subscriber, context);
 
     if (before) {
       this.historyParams.get(key)?.forEach((v: Parameters<T>) => this.invokeSub(subscriber, context, v));
@@ -62,13 +73,19 @@ export default class EventChannel<T extends Subscriber> {
    * @param [options.context] - context of subscriber
    */
   once(key: EventType, subscriber: T, options?: { before?: boolean; context?: any }) {
-    const { context } = options ?? {};
+    const { before, context } = options ?? {};
+    if (before) {
+      const history = this.historyParams.get(key);
+      if (isArray(history) && history.length) {
+        this.invokeSub(subscriber, context, history[0]);
+        return;
+      }
+    }
     const wrapper = (...args: Parameters<T>) => {
       this.off(key, wrapper as T);
       return subscriber.apply(context, args);
     };
-
-    this.on(key, wrapper as T, options);
+    this.addSub(key, wrapper as T, context);
   }
 
   /**
@@ -99,9 +116,6 @@ export default class EventChannel<T extends Subscriber> {
       this.historyParams.get(key)!.push(params);
     }
 
-    const subscribers = this.subscribers.get(key);
-    if (subscribers) {
-      subscribers.forEach(([sub, ctx]) => this.invokeSub(sub, ctx, params));
-    }
+    this.subscribers.get(key)?.forEach(([sub, ctx]) => this.invokeSub(sub, ctx, params));
   }
 }

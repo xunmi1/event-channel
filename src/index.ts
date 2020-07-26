@@ -2,9 +2,7 @@ import { version } from '../package.json';
 import { createMap, CustomMap } from './map';
 import { findIndex, isArray } from './utils';
 
-// @public
 export type EventType = string | symbol;
-// @public
 export type Subscriber = (...args: any[]) => void;
 type RecordMap<T> = CustomMap<EventType, T[]>;
 
@@ -83,7 +81,7 @@ export default class EventChannel<T extends Subscriber> {
     }
     const wrapper = (...args: Parameters<T>) => {
       this.off(key, wrapper as T);
-      return subscriber.apply(context, args);
+      return this.invokeSub(subscriber, context, args);
     };
     this.addSub(key, wrapper as T, context);
   }

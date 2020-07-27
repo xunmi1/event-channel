@@ -1,6 +1,6 @@
 {
   "name": "@xunmi/event-channel",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publishConfig": {
     "access": "public"
   },
@@ -12,6 +12,12 @@
   "types": "dist/event-channel.d.ts",
   "files": [
     "dist"
+  ],
+  "sideEffects": false,
+  "keywords": [
+    "events",
+    "pubsub",
+    "event-channel"
   ],
   "repository": {
     "type": "git",

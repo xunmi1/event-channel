@@ -87,7 +87,7 @@ export default class EventChannel<T extends Subscriber> {
   }
 
   /**
-   * Unsubscribe the event
+   * Unsubscribe to an event
    * @param key - event name
    * @param subscriber
    */

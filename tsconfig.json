@@ -6,6 +6,7 @@
     "noUnusedLocals": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "esModuleInterop": true,
     "strictPropertyInitialization": false,
     "suppressImplicitAnyIndexErrors": true,
     "declaration": true,

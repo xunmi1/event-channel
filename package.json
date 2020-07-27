@@ -19,22 +19,27 @@
   },
   "homepage": "https://github.com/xunmi1/event-channel#readme",
   "scripts": {
-    "build": "npm run build-ts && npm run build-rollup && npm run build-dts && rimraf .cache",
+    "build": "npm run lint && npm run build-ts && npm run build-rollup && npm run build-dts && rimraf .cache",
     "build-ts": "rimraf .cache && tsc -p tsconfig.json --outDir .cache",
     "build-rollup": "rimraf dist && rollup -c scripts/rollup.config.js  -i .cache/src/index.js",
     "build-dts": "api-extractor run --local --typescript-compiler-folder \"node_modules/typescript\"",
-    "lint": "prettier --write --parser typescript \"**/*.ts\""
+    "lint": "prettier --write --parser typescript \"**/*.ts\"",
+    "test": "rimraf coverage && jest --runInBand",
+    "release": "npm test && npm run build && npm publish"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.8.15",
+    "@microsoft/api-extractor": "^7.9.2",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
+    "@types/jest": "^26.0.7",
     "@xunmi/prettier-config": "^1.0.1",
+    "jest": "^26.1.0",
     "prettier": "^2.0.5",
-    "rollup": "^2.21.0",
-    "rollup-plugin-terser": "^6.1.0",
     "rimraf": "^3.0.2",
-    "typescript": "^3.9.6"
+    "rollup": "^2.23.0",
+    "rollup-plugin-terser": "^6.1.0",
+    "ts-jest": "^26.1.3",
+    "typescript": "^3.9.7"
   },
   "prettier": "@xunmi/prettier-config"
 }

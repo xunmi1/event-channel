@@ -1,4 +1,4 @@
-# event-channel
+# @xunmi/event-channel
 
 [![ci](https://img.shields.io/github/workflow/status/xunmi1/event-channel/CI?style=flat-square&logo=github)](https://github.com/xunmi1/event-channel/actions?query=workflow%3ACI)
 [![codecov](https://img.shields.io/codecov/c/github/xunmi1/event-channel?style=flat-square&logo=codecov)](https://codecov.io/gh/xunmi1/event-channel)
@@ -38,8 +38,9 @@ Implementation of the pub-sub pattern.
 
   ```js
   const subscriber = (...params) => {
-  	// do something 
+    // do something 
   }
+  
   // support `string` or `symbol` type
   eventChannel.on('foo', subscriber);
   ```
